@@ -1,0 +1,317 @@
+COMMAND SEQUENCES: GIT AND GITHUB Beginner Guide to Retrieving and
+Managing Work in a Local Repository
+
+Document Purpose This document introduces beginner-level engineers to
+the basic Git commands used to obtain a project from a remote GitHub
+repository, create a working branch, stage and commit changes, and
+resolve a standard text-based merge conflict. It uses only standard,
+basic Git operations. Advanced commands and workflows are intentionally
+excluded.
+
+1.  WHY THIS MATTERS
+
+Software projects change continuously. Multiple engineers may work on
+the same codebase, and each change must be tracked so that work can be
+reviewed, shared, and recovered when necessary.
+
+Git is a version control system. Version control records changes to
+files over time. It helps engineers understand what changed, who
+recorded a change, and how different contributions fit together.
+
+GitHub is a hosting and collaboration platform commonly used to store
+Git repositories remotely. Git is the version control tool; GitHub hosts
+repositories and provides collaboration features.
+
+Using a separate branch helps an engineer isolate new work from the
+project’s shared baseline. Staging and committing changes creates a
+clear, recorded unit of work. Pulling upstream changes helps keep the
+local repository aligned with the remote project.
+
+2.  CORE IDEA
+
+A repository is a project directory whose files and change history are
+tracked by Git. A local repository is stored on the engineer’s computer.
+A remote repository is stored on a hosting service such as GitHub.
+
+The working copy is the set of project files currently checked out on
+the engineer’s computer. The staging area is the preparation area where
+selected changes are collected before they are committed. A commit
+records the staged changes as a named point in the repository’s history.
+
+The upstream repository is the remote source from which the local
+repository receives updates. In a typical GitHub workflow, the remote is
+named “origin”; the default branch on that remote may be called “main”.
+
+A Configuration Item (CI) is a project element that is managed and
+tracked under configuration management. Examples include source-code
+files, configuration files, scripts, and documentation. Git can track
+changes to these items.
+
+3.  KEY TERMS
+
+-   Version control: A method of recording and managing changes to files
+    over time.
+-   Git: A distributed version control system used to track project
+    history and coordinate work.
+-   GitHub: A platform for hosting Git repositories and collaborating on
+    software projects.
+-   Repository (repo): A project directory and its Git-managed history.
+-   Local repository: The repository stored on the engineer’s computer.
+-   Remote repository: The repository hosted on a service such as
+    GitHub.
+-   Working copy: The checked-out files an engineer views and edits
+    locally.
+-   Staging area: The area containing selected changes prepared for the
+    next commit.
+-   Commit: A recorded snapshot of staged changes, accompanied by a
+    message.
+-   Branch: An independent line of development within a repository.
+-   Upstream: The remote repository or branch from which updates are
+    obtained.
+-   Merge: The process of combining changes from different branches.
+-   Merge conflict: A situation in which Git cannot automatically
+    combine competing changes to the same part of a file.
+-   Configuration Item (CI): An item managed and tracked as part of the
+    project’s configuration baseline.
+-   Breakpoint: A debugging marker that pauses program execution at a
+    chosen line so an engineer can inspect program state. A breakpoint
+    is a debugging concept, not a Git command.
+-   Stack trace: A report showing the sequence of function or method
+    calls active when an error occurred. Stack traces help diagnose
+    software problems; they are not part of the Git staging or commit
+    process.
+
+4.  PREREQUISITES
+
+Before starting, the engineer should have: - Git installed on the local
+computer. - Access to the GitHub repository. - Permission to clone the
+repository and, if required, push changes. - The repository URL,
+available from the GitHub repository page.
+
+The commands below use placeholders. Replace with the actual GitHub URL
+and with a suitable branch name. Do not type the angle brackets.
+
+5.  WORKFLOW A: GET THE PROJECT FROM GITHUB
+
+Purpose: Create a local copy of the remote repository so the engineer
+can inspect and work with the project’s files.
+
+Command sequence:
+
+    git clone <repository-url>
+    cd <repository-folder>
+    git status
+    git branch
+
+Explanation: 1. git clone downloads the repository and its available
+history from GitHub, creating a local repository. 2. cd moves into the
+newly created project directory. Replace with the directory name created
+by the clone operation. 3. git status reports the current branch and
+whether the working copy contains changes. 4. git branch lists the local
+branches. The asterisk identifies the branch currently checked out.
+
+At this point, the engineer has a local working copy. The remote is
+normally configured as “origin”.
+
+6.  WORKFLOW B: GET THE LATEST UPSTREAM CHANGES
+
+Purpose: Update the current local branch with changes available on its
+corresponding remote branch.
+
+Command sequence:
+
+    git pull
+
+Explanation: git pull obtains changes from the configured upstream
+branch and integrates them into the current local branch. In a standard
+beginner workflow, this keeps the local working copy up to date before
+new work begins.
+
+Run git status afterward to review the state of the working copy:
+
+    git status
+
+If Git reports that the local branch has no upstream configured, consult
+the project maintainer for the correct remote branch before proceeding.
+Do not guess the upstream branch name.
+
+7.  WORKFLOW C: CREATE AND SWITCH TO A WORKING BRANCH
+
+Purpose: Keep a new task separate from the shared baseline branch.
+
+Command sequence:
+
+    git branch <branch-name>
+    git checkout <branch-name>
+    git branch
+    git status
+
+Explanation: 1. git branch creates a new branch. 2. git checkout
+switches the working copy to that branch. 3. git branch confirms the
+available local branches and marks the active branch with an asterisk.
+4. git status confirms the active branch and working-copy state.
+
+Example:
+
+    git branch feature-login-validation
+    git checkout feature-login-validation
+
+The engineer should make task-related edits only after checking that the
+intended branch is active.
+
+8.  WORKFLOW D: STAGE AND COMMIT CHANGES
+
+Purpose: Select the changes that belong in a commit and record them in
+the local repository history.
+
+Command sequence:
+
+    git status
+    git add <file-name>
+    git status
+    git commit -m "Describe the change"
+
+Explanation: 1. git status identifies modified and untracked files in
+the working copy. 2. git add places the selected file’s changes in the
+staging area. Replace with the actual path. 3. Run git status again to
+verify which changes are staged. 4. git commit -m records the staged
+changes in the local repository with a descriptive message.
+
+To stage all current changes in the repository, use:
+
+    git add .
+
+Use this command only after reviewing git status and confirming that all
+listed changes should be included in the commit.
+
+A commit records changes locally. It does not, by itself, upload them to
+GitHub.
+
+9.  WORKFLOW E: PUSH THE BRANCH TO GITHUB
+
+Purpose: Publish the committed branch so that its work is available in
+the remote repository.
+
+For a branch that already has an upstream configured:
+
+    git push
+
+For a newly created branch that has not yet been published:
+
+    git push -u origin <branch-name>
+
+Explanation: git push sends local commits to the remote repository. The
+-u option sets the upstream relationship for the new branch, so later
+pushes can normally use the shorter git push command.
+
+Only push to a remote branch when the engineer has the required
+permission and the project workflow allows it.
+
+10. WORKFLOW F: RESOLVE A BASIC TEXT-BASED MERGE CONFLICT
+
+Purpose: Resolve a conflict when Git cannot automatically combine
+changes from the upstream branch with changes in the local working
+branch.
+
+A merge conflict can occur when two sets of changes modify overlapping
+lines in the same file. Git pauses the integration and marks the
+conflicting section in the file.
+
+Example conflict markers:
+
+    <<<<<<< HEAD
+    Current branch version of the text
+    =======
+    Incoming upstream version of the text
+    >>>>>>> main
+
+The marker labels identify the competing versions. The engineer must
+review both versions and edit the file so that it contains the correct
+final content. The engineer should remove all conflict markers before
+staging the resolved file.
+
+Basic command sequence:
+
+    git status
+    git pull
+    git status
+
+If Git reports a conflict:
+
+1.  Open each file listed as conflicted.
+2.  Find the conflict markers: <<<<<<<, =======, and >>>>>>>.
+3.  Review the current-branch content and the incoming upstream content.
+4.  Edit the file to create the intended final version. Keep the correct
+    content and remove all conflict markers.
+5.  Save the file.
+6.  Stage the resolved file and commit the resolution.
+
+Commands after editing the conflicted file:
+
+    git add <file-name>
+    git status
+    git commit -m "Resolve merge conflict"
+
+If more than one file is conflicted, repeat the review and editing
+process for every conflicted file, then stage each resolved file.
+Alternatively, after carefully reviewing all changes, use git add . to
+stage all intended resolutions.
+
+Important: - Do not commit while unresolved conflict markers remain. -
+Do not discard another engineer’s work without understanding the
+change. - If the correct resolution is unclear, stop and ask the project
+maintainer or the engineer responsible for the affected Configuration
+Item. - After the conflict-resolution commit, run git status to confirm
+that the working copy is clean.
+
+12. BASIC COMMAND REFERENCE
+
+-   git clone : Create a local copy of a remote repository.
+-   cd : Enter the local project directory.
+-   git status : Inspect the current branch and working-copy changes.
+-   git branch : List local branches.
+-   git branch : Create a branch.
+-   git checkout : Switch to an existing branch.
+-   git pull : Retrieve and integrate upstream changes.
+-   git add : Stage changes to a selected file.
+-   git add . : Stage all current changes under the repository.
+-   git commit -m “message” : Record staged changes in the local
+    repository.
+-   git push : Send committed changes to the configured upstream branch.
+-   git push -u origin : Publish a new branch and set its upstream.
+----------------------------------------------------------------------------------------------------------------
+/** Example **/
+Command Sequence: Fetching Upstream Changes and Resolving a Merge Conflict
+Scenario: A merge conflict occurs in config/metrics_config.py because two contributors modified the same line on different branches.
+
+# 1. Check current branch and status
+git status
+git branch --show-current
+
+# 2. Fetch upstream changes
+git fetch origin
+
+# 3. Merge main into the feature branch
+git merge origin/main
+
+# 4. Check conflict status
+git status
+
+# 5. Open the conflicting file for manual editing
+# Edit config/metrics_config.py using a text editor.
+
+# 6. Verify conflict markers are removed
+git diff --check
+cat config/metrics_config.py
+grep -n -E '^(<<<<<<<|=======|>>>>>>>)' config/metrics_config.py
+
+# 7. Stage the resolved file
+git add config/metrics_config.py
+
+# 8. Commit the merge resolution
+git commit -m "merge: resolve metrics configuration conflict"
+
+# 9. Verify successful completion
+git status
+git log --oneline --graph -5
+cat config/metrics_config.py
